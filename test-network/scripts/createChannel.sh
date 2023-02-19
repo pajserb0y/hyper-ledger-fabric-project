@@ -43,11 +43,12 @@ createChannel() {
 	verifyResult $res "Channel creation failed"
 }
 
-# joinChannel ORG
+# joinChannel ORG PEER_PORT
 joinChannel() {
   FABRIC_CFG_PATH=$PWD/../config/
-  ORG=$1
-  setGlobals $ORG
+  	ORG=$1
+  	PEER_PORT=$2
+  	setGlobals $ORG $PEER_PORT
 	local rc=1
 	local COUNTER=1
 	## Sometimes Join takes time, hence retry
@@ -84,15 +85,50 @@ createChannel
 successln "Channel '$CHANNEL_NAME' created"
 
 ## Join all the peers to the channel
-infoln "Joining org1 peer to the channel..."
-joinChannel 1
-infoln "Joining org2 peer to the channel..."
-joinChannel 2
+infoln "Joining org1 peer0 to the channel..."
+joinChannel 1 7051
+infoln "Joining org1 peer1 to the channel..."
+joinChannel 1 7055
+infoln "Joining org1 peer2 to the channel..."
+joinChannel 1 7057
+infoln "Joining org1 peer3 to the channel..."
+joinChannel 1 7059
+
+infoln "Joining org2 peer0 to the channel..."
+joinChannel 2 9051
+infoln "Joining org2 peer1 to the channel..."
+joinChannel 2 9055
+infoln "Joining org2 peer2 to the channel..."
+joinChannel 2 9057
+infoln "Joining org2 peer3 to the channel..."
+joinChannel 2 9059
+
+infoln "Joining org3 peer0 to the channel..."
+joinChannel 3 10051
+infoln "Joining org3 peer1 to the channel..."
+joinChannel 3 10055
+infoln "Joining org3 peer2 to the channel..."
+joinChannel 3 10057
+infoln "Joining org3 peer3 to the channel..."
+joinChannel 3 10059
+
+infoln "Joining org4 peer0 to the channel..."
+joinChannel 4 11051
+infoln "Joining org4 peer1 to the channel..."
+joinChannel 4 11055
+infoln "Joining org4 peer2 to the channel..."
+joinChannel 4 11057
+infoln "Joining org4 peer3 to the channel..."
+joinChannel 4 11059
 
 ## Set the anchor peers for each org in the channel
 infoln "Setting anchor peer for org1..."
 setAnchorPeer 1
 infoln "Setting anchor peer for org2..."
 setAnchorPeer 2
+infoln "Setting anchor peer for org3..."
+setAnchorPeer 3
+infoln "Setting anchor peer for org4..."
+setAnchorPeer 4
 
 successln "Channel '$CHANNEL_NAME' joined"
