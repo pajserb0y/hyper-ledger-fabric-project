@@ -51,26 +51,26 @@ type QueryResult struct {
 // InitLedger adds a base set of cars to the ledger
 func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
 	owners := []Owner{
-		{Id: 1, Name: "Marko", Surname: "NIkolic", Email: "markonikolic@gmail.com", Money: 8000},
+		{Id: 1, Name: "Marko", Surname: "Nikolic", Email: "markonikolic@gmail.com", Money: 8000},
 		{Id: 2, Name: "NIkola", Surname: "Kajtes", Email: "nikolakajtes@gmail.com", Money: 11000},
 	}
 
 	cars := []Car{
-		{Id: 1, Make: "Toyota", Model: "Prius", Color: "blue",Year: "2020", Owner: "1",
+		{Id: 1, Make: "Toyota", Model: "Prius", Colour: "blue",Year: "2020", Owner: "1",
 			Malfunctions: []Malfunction{
-				{Description: "Otpo tocak", Price: 250},
+				{Description: "Bad engine", Price: 250},
 			},
 			Price: 5000,
 		},
-		{Id: 2, Make: "Ford", Model: "Mustang", Color: "blue",Year: "2010", Owner: "1", Malfunctions: []Malfunction{}, Price: 3000},
-		{Id: 3, Make: "Hyundai", Model: "Tucson", Color: "green",Year: "2021", Owner: "2",
+		{Id: 2, Make: "Ford", Model: "Mustang", Colour: "blue",Year: "2010", Owner: "1", Malfunctions: []Malfunction{}, Price: 3000},
+		{Id: 3, Make: "Hyundai", Model: "Tucson", Colour: "green",Year: "2021", Owner: "2",
 			Malfunctions: []Malfunction{
-				{Description: "Otisla lamela", Price: 1000},
+				{Description: "Eletrionic failure", Price: 1000},
 			},
 			Price: 2500,
 		},
-		{Id: 4, Make: "Volkswagen", Model: "Passat", Color: "blue",Year: "2020", Owner: "2", Malfunctions: []Malfunction{}, Price: 7000},
-		{Id: 5, Make: "Tesla", Model: "S", Color: "blue",Year: "2023", Owner: "1", Malfunctions: []Malfunction{}, Price: 20000},
+		{Id: 4, Make: "Volkswagen", Model: "Passat", Colour: "blue",Year: "2020", Owner: "2", Malfunctions: []Malfunction{}, Price: 7000},
+		{Id: 5, Make: "Tesla", Model: "S", Colour: "blue",Year: "2023", Owner: "1", Malfunctions: []Malfunction{}, Price: 20000},
 	}
 
 	for i, car := range cars {
@@ -82,6 +82,15 @@ func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) 
 		}
 	}
 
+	for _, owner := range owners {
+	ownerAsBytes, _ := json.Marshal(owner)
+	err := ctx.GetStub().PutState("OWNER"+strconv.Itoa(owner.Id), ownerAsBytes)
+
+	if err != nil {
+		return fmt.Errorf("failed to put to world state. %s", err.Error())
+		}
+	}
+	
 	return nil
 }
 
